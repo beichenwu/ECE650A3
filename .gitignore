@@ -1,0 +1,8 @@
+cmake-build-debug
+build
+venv
+.idea
+sample_input
+*.pyc
+
+
