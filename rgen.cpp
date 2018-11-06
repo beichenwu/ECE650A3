@@ -77,9 +77,9 @@ vector<vector<int> > Add_Point(vector<vector<int> > street, vector<int> point){ 
     return  new_street;
 }
 
-vector<vector<int> > Street_Generator(int s_number, int c_number){
+vector<vector<int> > Street_Generator(int n_number, int c_number){
     vector<vector<int> > tmp_street;
-    for (int i = 0; i < s_number; i++){
+    for (int i = 0; i < (n_number+1); i++){
         vector<int> tmp_point = Point_Generator(c_number);
         int trail_count = 0;
         int count = 0;
@@ -92,7 +92,7 @@ vector<vector<int> > Street_Generator(int s_number, int c_number){
         }
         if(count == 0){
             cerr << "Error: failed to generate valid input for 25 simultaneous attempts" << endl;
-            break;
+            exit (EXIT_FAILURE);
         }
     }
     return tmp_street;
@@ -115,9 +115,9 @@ bool Is_Street_Exist(vector<vector<vector<int> > > street_list, vector<vector<in
 
 vector<vector<vector<int> > > Street_List_Generator(int s_number, int n_number, int c_number){
     vector<vector<vector<int> > > tmp_street_list;
-    for(int i =0; i < n_number; i++){
+    for(int i =0; i < s_number; i++){
         vector<vector<int> >  tmp_street;
-        tmp_street = Street_Generator(s_number, c_number);
+        tmp_street = Street_Generator(n_number, c_number);
         int trail_count = 0;
         int count = 0;
         while(trail_count< 25){
@@ -129,7 +129,7 @@ vector<vector<vector<int> > > Street_List_Generator(int s_number, int n_number, 
         }
         if(count == 0){
             cerr << "Error: failed to generate valid input for 25 simultaneous attempts" << endl;
-            break;
+            exit(EXIT_FAILURE);
         }
     }
     return tmp_street_list;
@@ -217,7 +217,6 @@ int main (int argc, char **argv) {
 
     }
     else{
-        cout << "test"<<endl;
     }
     return 0;
 }

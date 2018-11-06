@@ -68,7 +68,8 @@ int main (int argc, char* argv[]) {
     //Create Pipe_a3 to rgen
     int pipe_ece650a3_rgen[2];
     pipe(pipe_ece650a3_rgen);
-
+    int rgenstatus;
+    pid_t rgenstatusresult;
     //Create Pipe_rgen to a1
     int pipe_rgen_ece650a1[2];
     pipe(pipe_rgen_ece650a1);
@@ -76,27 +77,20 @@ int main (int argc, char* argv[]) {
     //Create Pipe_a1 to a2
     int pipe_ece650a1_ece650a2[2];
     pipe(pipe_ece650a1_ece650a2);
-    int a1status;
-    pid_t a1statusresult;
-    //int a1outputline1result;
-    //char a1outputline1[4096];
-    //int a1outputline2result;
-    //char a1outputline2[4096];
 
-    const char * user_input_a2_char;
+    pid_t input_process;
 
     string user_input;
-
 
     vector<char *> arg_list;
     for (int i = 0; i < argc; ++i) {
         arg_list.push_back(argv[i]);
     }
     //update the command line variables
-    s = Read_Command_Line(argc, arg_list, 's', 2, 3);
-    n = Read_Command_Line(argc, arg_list, 'n', 1, 3);
-    l = Read_Command_Line(argc, arg_list, 'l', 1, 4);
-    c = Read_Command_Line(argc, arg_list, 'c', 1, 15);
+    s = Read_Command_Line(argc, arg_list, 's', 2, 10);
+    n = Read_Command_Line(argc, arg_list, 'n', 1, 5);
+    l = Read_Command_Line(argc, arg_list, 'l', 5, 5);
+    c = Read_Command_Line(argc, arg_list, 'c', 1, 20);
 
     //Create ouput for rgen
     input_rgen = input_rgen + "s" + to_string(s) + ",";
@@ -106,8 +100,6 @@ int main (int argc, char* argv[]) {
     input_rgen_char = input_rgen.c_str();
 
     //Start child process
-
-
 
     idRgen = fork();
     if (idRgen != 0) {
@@ -122,46 +114,46 @@ int main (int argc, char* argv[]) {
         close(pipe_ece650a3_rgen[1]);
         close(pipe_ece650a3_rgen[0]);
         dup2(pipe_rgen_ece650a1[1], STDOUT_FILENO);
+        dup2(pipe_ece650a1_ece650a2[1], STDERR_FILENO);
         close(pipe_rgen_ece650a1[1]);
         close(pipe_rgen_ece650a1[0]);
         execv(rgen_cmd, argv_rgen);
     }
     children.push_back(idRgen);
-
+    rgenstatusresult = waitpid(idRgen,&rgenstatus,WNOHANG);
     a1ece650 = fork();
     if (a1ece650 == 0) {
         dup2(pipe_rgen_ece650a1[0], STDIN_FILENO);
         close(pipe_rgen_ece650a1[1]);
         close(pipe_rgen_ece650a1[0]);
         dup2(pipe_ece650a1_ece650a2[1], STDOUT_FILENO);
+        dup2(pipe_ece650a1_ece650a2[1], STDERR_FILENO);
         close(pipe_ece650a1_ece650a2[1]);
         close(pipe_ece650a1_ece650a2[0]);
         execl(ece650a1_cmd_1,ece650a1_cmd_2, ece650a1_cmd_3,NULL);
     }
     children.push_back(a1ece650);
-    a1statusresult = waitpid(a1ece650,&a1status,WNOHANG);
 
-    while(a1statusresult == 0){
-        a2ece650 = fork();
-        if (a2ece650==0) {
-            //read(pipe_ece650a1_ece650a2[0],a1outputline1,sizeof(a1outputline1));
-            //cout << a1outputline1 << endl;
-            dup2(pipe_ece650a1_ece650a2[0], STDIN_FILENO);
-            close(pipe_ece650a1_ece650a2[1]);
-            close(pipe_ece650a1_ece650a2[0]);
-            execv(ece650a2_cmd, argv_ece650a2);
+
+    a2ece650 = fork();
+    if (a2ece650==0) {
+        dup2(pipe_ece650a1_ece650a2[0], STDIN_FILENO);
+        close(pipe_ece650a1_ece650a2[1]);
+        close(pipe_ece650a1_ece650a2[0]);
+        execv(ece650a2_cmd, argv_ece650a2);
         }
-        //else{
-            //getline(cin, user_input);
-            if (poll(pipe_ece650a1_ece650a2, ))
-            //user_input_a2_char = user_input.c_str();
-            //FILE *stream_input_a1;
-            //stream_input_a1 = fdopen(pipe_ece650a1_ece650a2[1], "w");
-            //fprintf(stream_input_a1, "%s", user_input_a2_char);
-            //fflush(stream_input_a1);
-            //close(pipe_ece650a1_ece650a2[0]);
-            //close(pipe_ece650a1_ece650a2[1]);
-        //}
+
+    while(rgenstatusresult == 0){
+        input_process = fork();
+        if(input_process == 0){
+            getline(cin, user_input);
+            dup2(pipe_ece650a1_ece650a2[1], STDOUT_FILENO);
+            dup2(pipe_ece650a1_ece650a2[1], STDERR_FILENO);
+            close(pipe_ece650a1_ece650a2[0]);
+            close(pipe_ece650a1_ece650a2[1]);
+            cout<<user_input<<endl;
+        }
+        rgenstatusresult = waitpid(idRgen,&rgenstatus,WNOHANG);
     }
     children.push_back(a2ece650);
 

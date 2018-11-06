@@ -220,7 +220,6 @@ int main(int argc, char** argv) {
         else {                                             //This should return an error to user for wrong command
         }
     }
-
     //cout << "Finish reading input" << endl;
     return 0;
     exit (EXIT_FAILURE);
