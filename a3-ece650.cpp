@@ -58,7 +58,7 @@ int main (int argc, char* argv[]) {
     //const char *argv_rgen[9];
     //argv_rgen[0] = "./rgen";
     pid_t a1ece650;
-    const char *ece650a1_cmd_1 = "../../../venv/bin/python";
+    const char *ece650a1_cmd_1 = "../../../../../venv/bin/python";
     const char *ece650a1_cmd_2 = "python";
     const char *ece650a1_cmd_3 = "./a1-ece650.py";
     pid_t a2ece650;

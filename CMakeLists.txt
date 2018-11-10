@@ -9,6 +9,6 @@ add_executable(a2-ece650 a2-ece650.cpp)
 add_executable(rgen rgen.cpp)
 
 install(PROGRAMS a1-ece650.py support_functions.py intersect.py DESTINATION bin)
-install(TARGETS a2-ece650 a3-ece650 RUNTIME DESTINATION bin)
+install(TARGETS a2-ece650 a3-ece650 rgen RUNTIME DESTINATION bin)
 
 
