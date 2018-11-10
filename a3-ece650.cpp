@@ -58,11 +58,12 @@ int main (int argc, char* argv[]) {
     //const char *argv_rgen[9];
     //argv_rgen[0] = "./rgen";
     pid_t a1ece650;
-    const char *ece650a1_cmd_1 = "../../../../../venv/bin/python";
+    const char *ece650a1_cmd_1 = "/usr/bin/python";
     const char *ece650a1_cmd_2 = "python";
-    const char *ece650a1_cmd_3 = "./a1-ece650.py";
+    const char *ece650a1_cmd_3 = "a1-ece650.py";
     pid_t a2ece650;
-    const char *ece650a2_cmd = "./a2-ece650";
+    const char *ece650a1_cmd = "./a2-ece650";
+    const char *ece650a2_cmd = "a2-ece650";
     char *argv_ece650a2[1];
     argv_ece650a2[0] = nullptr;
     //Create Pipe_a3 to rgen
@@ -124,7 +125,7 @@ int main (int argc, char* argv[]) {
         //dup2(pipe_ece650a1_ece650a2[1], STDERR_FILENO);
         close(pipe_rgen_ece650a1[1]);
         close(pipe_rgen_ece650a1[0]);
-        execl(rgen_cmd,"./rgen", argv_rgen1, argv_rgen2, argv_rgen3, argv_rgen4 ,argv_rgen5, argv_rgen6 , argv_rgen7, argv_rgen8, (char *)NULL);
+        execl(rgen_cmd,"rgen", argv_rgen1, argv_rgen2, argv_rgen3, argv_rgen4 ,argv_rgen5, argv_rgen6 , argv_rgen7, argv_rgen8, (char *)NULL);
         //FILE *stream_input_rgen;
         //stream_input_rgen = fdopen(pipe_ece650a3_rgen[1], "w");
         //fprintf(stream_input_rgen, "%s", input_rgen_char);
@@ -155,7 +156,7 @@ int main (int argc, char* argv[]) {
         dup2(pipe_ece650a1_ece650a2[0], STDIN_FILENO);
         close(pipe_ece650a1_ece650a2[1]);
         close(pipe_ece650a1_ece650a2[0]);
-        execv(ece650a2_cmd, argv_ece650a2);
+        execl(ece650a1_cmd,ece650a2_cmd, argv_ece650a2);
         }
 
     while(rgenstatusresult == 0){
