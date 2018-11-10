@@ -37,7 +37,7 @@ def main():
             #support_functions.print_edge_list_A3(E);
         #except EOFError:
             #break;
-    print 'Finished reading input'
+    #print 'Finished reading input'
     sys.exit(0)
 
 if __name__ == '__main__':

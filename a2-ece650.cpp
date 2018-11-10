@@ -68,8 +68,8 @@ vector<vector<int> > Read_Edge_list(string User_Input, vector<vector<int> > Vert
         }
     }
     for(int i = 0; i < Edge_List.size(); i++){                                                             //Error Check
-        if(Edge_List[i][0]> Node_Length || Edge_List[i][1]> Node_Length ){
-            cerr << "Edge List contains nodes beyond the node list" << endl;
+        if(Edge_List[i][0]> Node_Length-1 || Edge_List[i][1]> Node_Length-1 ){
+            cerr << "Error: Edge List contains nodes beyond the node list" << endl;
             break;
         }
     }
@@ -204,12 +204,12 @@ int main(int argc, char** argv) {
 
 
             if((!Check_Node_Within_Range(Start_Vertex, VerticesVector.size())) || (!Check_Node_Within_Range(End_Vertex, VerticesVector.size()))){
-                cerr << "The Start and End Vertex are out of range " << endl;
+                cerr << "Error: The Start and End Vertex are out of range " << endl;
             }
             else {
                 vector<int> Path = Shortest_Path(Start_Vertex,End_Vertex,VerticesVector,Edge_List);
                 if (Path.size() == 1) {                                 //Error Check for if there is path exist or not
-                    cerr << "There is no path exist between these pair of vertices" << endl;
+                    cerr << "Error: There is no path exist between these pair of vertices" << endl;
                 }
                 else{
                     string Path_Output = Return_Short_Path(Path);
@@ -220,7 +220,6 @@ int main(int argc, char** argv) {
         else {                                             //This should return an error to user for wrong command
         }
     }
-    //cout << "Finish reading input" << endl;
     return 0;
     exit (EXIT_FAILURE);
 }

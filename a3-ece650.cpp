@@ -22,7 +22,7 @@ int Read_Command_Line(int argc, vector<char*> arg, char command, int limit, int 
                 return tmp_int;
             }
             else {
-                cerr <<"The command: "<< command <<" value should be bigger or equal to " << limit << endl;
+                cerr <<"Error: The command: "<< command <<" value should be bigger or equal to " << limit << endl;
                 break;
             }
         }
@@ -52,11 +52,11 @@ int main (int argc, char* argv[]) {
     int c;   //20 default
     string input_rgen;
     vector<pid_t> children;
-    const char * input_rgen_char;
+    //const char * input_rgen_char;
     pid_t idRgen;
     const char *rgen_cmd = "./rgen";
-    char *argv_rgen[1];
-    argv_rgen[0] = nullptr;
+    //const char *argv_rgen[9];
+    //argv_rgen[0] = "./rgen";
     pid_t a1ece650;
     const char *ece650a1_cmd_1 = "/usr/bin/python";
     const char *ece650a1_cmd_2 = "python";
@@ -93,32 +93,47 @@ int main (int argc, char* argv[]) {
     c = Read_Command_Line(argc, arg_list, 'c', 1, 20);
 
     //Create ouput for rgen
-    input_rgen = input_rgen + "s" + to_string(s) + ",";
-    input_rgen = input_rgen + "n" + to_string(n) + ",";
-    input_rgen = input_rgen + "l" + to_string(l) + ",";
-    input_rgen = input_rgen + "c" + to_string(c) + ":";
-    input_rgen_char = input_rgen.c_str();
+    //input_rgen = input_rgen + "s" + to_string(s) + ",";
+    //input_rgen = input_rgen + "n" + to_string(n) + ",";
+    //input_rgen = input_rgen + "l" + to_string(l) + ",";
+    //input_rgen = input_rgen + "c" + to_string(c) + ":";
+    //input_rgen_char = input_rgen.c_str();
+    const char *argv_rgen1 = "-s";
+    string tmp_string2 = to_string(s);
+    const char *argv_rgen2 = tmp_string2.c_str();
+    //cout << tmp_string.c_str()<< endl;
+    const char *argv_rgen3 = "-n";
+    string tmp_string4 = to_string(n);
+    const char *argv_rgen4 = tmp_string4.c_str();
+    const char *argv_rgen5 = "-l";
+    string tmp_string6 = to_string(l);
+    const char *argv_rgen6 = tmp_string6.c_str();
+    const char *argv_rgen7 = "-c";
+    string tmp_string8 = to_string(c);
+    const char *argv_rgen8 = tmp_string8.c_str();
+
 
     //Start child process
 
     idRgen = fork();
-    if (idRgen != 0) {
-        FILE *stream_input_rgen;
-        stream_input_rgen = fdopen(pipe_ece650a3_rgen[1], "w");
-        fprintf(stream_input_rgen, "%s", input_rgen_char);
-        fflush(stream_input_rgen);
-        close(pipe_ece650a3_rgen[0]);
-        close(pipe_ece650a3_rgen[1]);
-    }else{
-        dup2(pipe_ece650a3_rgen[0], STDIN_FILENO);
-        close(pipe_ece650a3_rgen[1]);
-        close(pipe_ece650a3_rgen[0]);
+    if (idRgen == 0) {
+        //dup2(pipe_ece650a3_rgen[0], STDIN_FILENO);
+        //close(pipe_ece650a3_rgen[1]);
+        //close(pipe_ece650a3_rgen[0]);
         dup2(pipe_rgen_ece650a1[1], STDOUT_FILENO);
-        dup2(pipe_ece650a1_ece650a2[1], STDERR_FILENO);
+        //dup2(pipe_ece650a1_ece650a2[1], STDERR_FILENO);
         close(pipe_rgen_ece650a1[1]);
         close(pipe_rgen_ece650a1[0]);
-        execv(rgen_cmd, argv_rgen);
-    }
+        execl(rgen_cmd,"./rgen", argv_rgen1, argv_rgen2, argv_rgen3, argv_rgen4 ,argv_rgen5, argv_rgen6 , argv_rgen7, argv_rgen8, (char *)NULL);
+        //FILE *stream_input_rgen;
+        //stream_input_rgen = fdopen(pipe_ece650a3_rgen[1], "w");
+        //fprintf(stream_input_rgen, "%s", input_rgen_char);
+        //fflush(stream_input_rgen);
+        //close(pipe_ece650a3_rgen[0]);
+        //close(pipe_ece650a3_rgen[1]);
+    }//else{
+
+    //}
     children.push_back(idRgen);
     rgenstatusresult = waitpid(idRgen,&rgenstatus,WNOHANG);
     a1ece650 = fork();
