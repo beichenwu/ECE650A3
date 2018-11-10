@@ -54,16 +54,12 @@ int main (int argc, char* argv[]) {
     vector<pid_t> children;
     //const char * input_rgen_char;
     pid_t idRgen;
-    const char *rgen_cmd = "./rgen";
-    //const char *argv_rgen[9];
-    //argv_rgen[0] = "./rgen";
+
     pid_t a1ece650;
     pid_t a2ece650;
     //Create Pipe_a3 to rgen
     int pipe_ece650a3_rgen[2];
     pipe(pipe_ece650a3_rgen);
-    int rgenstatus;
-    pid_t rgenstatusresult;
     //Create Pipe_rgen to a1
     int pipe_rgen_ece650a1[2];
     pipe(pipe_rgen_ece650a1);
@@ -86,32 +82,19 @@ int main (int argc, char* argv[]) {
     l = Read_Command_Line(argc, arg_list, 'l', 5, 5);
     c = Read_Command_Line(argc, arg_list, 'c', 1, 20);
 
-    const char *argv_rgen1 = "-s";
-    string tmp_string2 = to_string(s);
-    const char *argv_rgen2 = tmp_string2.c_str();
-    //cout << tmp_string.c_str()<< endl;
-    const char *argv_rgen3 = "-n";
-    string tmp_string4 = to_string(n);
-    const char *argv_rgen4 = tmp_string4.c_str();
-    const char *argv_rgen5 = "-l";
-    string tmp_string6 = to_string(l);
-    const char *argv_rgen6 = tmp_string6.c_str();
-    const char *argv_rgen7 = "-c";
-    string tmp_string8 = to_string(c);
-    const char *argv_rgen8 = tmp_string8.c_str();
-
 
     //Start child process
 
     idRgen = fork();
+    children.push_back(idRgen);
     if (idRgen == 0) {
         dup2(pipe_rgen_ece650a1[1], STDOUT_FILENO);
         close(pipe_rgen_ece650a1[1]);
         close(pipe_rgen_ece650a1[0]);
-        execl(rgen_cmd,"rgen", argv_rgen1, argv_rgen2, argv_rgen3, argv_rgen4 ,argv_rgen5, argv_rgen6 , argv_rgen7, argv_rgen8, (char *)NULL);
+        execl("./rgen","rgen", "-s", to_string(s).c_str(), "-n", to_string(n).c_str(),"-l", to_string(l).c_str(), "-c",to_string(c).c_str(), (char*) NULL);
     } else {
-        children.push_back(idRgen);
         a1ece650 = fork();
+        children.push_back(a1ece650);
         if (a1ece650 == 0) {
             dup2(pipe_rgen_ece650a1[0], STDIN_FILENO);
             close(pipe_rgen_ece650a1[1]);
@@ -124,6 +107,7 @@ int main (int argc, char* argv[]) {
         } else {
             //children.push_back(a1ece650);
             a2ece650 = fork();
+            children.push_back(a1ece650);
             if (a2ece650 == 0) {
                 dup2(pipe_ece650a1_ece650a2[0], STDIN_FILENO);
                 close(pipe_ece650a1_ece650a2[1]);
@@ -131,9 +115,9 @@ int main (int argc, char* argv[]) {
                 execl("./a2-ece650", "a2-ece650", NULL);
             } else {
                 input_process = fork();
+                children.push_back(input_process);
                 if (input_process == 0) {
                     dup2(pipe_ece650a1_ece650a2[1], STDOUT_FILENO);
-                    //dup2(pipe_ece650a1_ece650a2[1], STDERR_FILENO);
                     close(pipe_ece650a1_ece650a2[0]);
                     close(pipe_ece650a1_ece650a2[1]);
                     while (true) {
@@ -141,7 +125,6 @@ int main (int argc, char* argv[]) {
                         cout << user_input << endl;
                     }
                 } else {
-                    children.push_back(input_process);
                     int status;
                     while (1) {
                         for (auto it = children.begin(); it != children.end(); ++it) {

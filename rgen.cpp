@@ -253,7 +253,7 @@ vector<vector<int> > Street_Generator(int n_number, int c_number,vector<vector<v
             }
             if(count == 25){
                 cerr << "Error: failed to generate valid input for 25 simultaneous attempts" << endl;
-                exit (EXIT_FAILURE);
+                exit (EXIT_SUCCESS);
             }
             if (judgeinside == 0){
                 judgeout = judgeout + 1;
