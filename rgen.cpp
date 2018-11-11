@@ -234,10 +234,10 @@ vector<vector<int> > Street_Generator(int n_number, int c_number,vector<vector<v
             }
             if (street_size > 0){
                 for(int y = 0; y < Street_List.size(); y++){
-                    for(int z;z < Street_List[y].size() - 1;z++){
+                    for(int z = 0; z < Street_List[y].size() - 1; z++){
                         vector<vector<int>> tmp_line1;
-                        tmp_line1.push_back(tmp_street[z]);
-                        tmp_line1.push_back(tmp_street[z+1]);
+                        tmp_line1.push_back(Street_List[y][z]);
+                        tmp_line1.push_back(Street_List[y][z+1]);
                         if (Is_OverLap(tmp_line1, tmp_line_segment)){
                             judgeinside = judgeinside + 1;
                         }
@@ -292,40 +292,38 @@ vector<vector<vector<int> > > Street_List_Generator(int s_number, int n_number, 
 }
 
 string Street_List_to_String(vector<vector<vector<int> > > street_list){
-    string output = "";
+    string output;
     int street_name = 0;
     for (vector<vector<int> > street: street_list){
         string tmp_street = to_string(street_name);
         street_name = street_name + 1;
-        output = output + "a" + " " +'"'+ tmp_street + '"'+ " ";
+        output +=  "a \""+ tmp_street + "\"";
         for (vector<int> point: street){
-            output = output + "(" + to_string(point[0]) + "," + to_string(point[1]) + ")" + " ";
+            output += "(" + to_string(point[0]) + "," + to_string(point[1]) + ") ";
         }
-        output = output + "\n";
+        output += + "\n";
     }
-    output = output + "g";
+    output += + "g";
     return output;
 }
 
-vector<string> String_Split(string String_Input, string Deliminator){           //A Function split a string and return a vector
-    int String_Index = 0;                                                       //Initialized the String Index
-    vector<string> Splited_String;                                              //Initialized the Vector
-    string Sub_String;                                                          //Initialized the substring
-    string String_For_Split = String_Input;                                     //Record the string for split
-    while(String_Index != -1){                                                  //Stop the loop if deliminator is not found
-        String_Index = String_For_Split.find(Deliminator);
-        Sub_String = String_For_Split.substr(0,String_Index);                   //Find the substring
-        Splited_String.push_back(Sub_String);                                   //Added the substring to vector
-        String_For_Split.erase(0, String_Index+1);                              //Re-size the string
-    }
-    return Splited_String;
-}
+//vector<string> String_Split(string String_Input, string &Deliminator){           //A Function split a string and return a vector
+    //int String_Index = 0;                                                       //Initialized the String Index
+    //vector<string> Splited_String;                                              //Initialized the Vector
+    //string Sub_String;                                                          //Initialized the substring
+    //while(String_Index != -1){                                                  //Stop the loop if deliminator is not found
+        //String_Index = String_Input.find(Deliminator);
+        //Sub_String = String_Input.substr(0,String_Index);                   //Find the substring
+        //Splited_String.push_back(Sub_String);                                   //Added the substring to vector
+        //String_Input.erase(0, String_Index+1);                              //Re-size the string
+    //}
+    //return Splited_String;
+//}
 
 string Remove_Street_list(int number){
     string remove_street;
-    int streetname = 0;
-    for(streetname; streetname< number; streetname++){
-        remove_street = remove_street + "r \""+ to_string(streetname)+"\""+"\n";
+    for(int streetname = 0; streetname< number; streetname++){
+        remove_street += "r \""+ to_string(streetname)+"\""+"\n";
     }
     return  remove_street;
 }
