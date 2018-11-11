@@ -226,22 +226,19 @@ vector<vector<int> > Street_Generator(int n_number, int c_number,vector<vector<v
                 tmp_line1.push_back(tmp_street[x+1]);
 
                 if (Is_OverLap(tmp_line1, tmp_line_segment)){
-                    count = count + 1;
                     judgeinside = judgeinside + 1;
                 }
                 if (Is_Cross(tmp_line1, tmp_line_segment)){
-                    count = count + 1;
                     judgeinside = judgeinside + 1;
                 }
             }
             if (street_size > 0){
-                for(int y = 0; y < Street_List.size()-1; y++){
-                    for(int z;z < Street_List[y].size() - 2;z++){
+                for(int y = 0; y < Street_List.size(); y++){
+                    for(int z;z < Street_List[y].size() - 1;z++){
                         vector<vector<int>> tmp_line1;
                         tmp_line1.push_back(tmp_street[z]);
                         tmp_line1.push_back(tmp_street[z+1]);
                         if (Is_OverLap(tmp_line1, tmp_line_segment)){
-                            count = count + 1;
                             judgeinside = judgeinside + 1;
                         }
                         //if (Is_Cross(tmp_line1, tmp_line_segment)){
@@ -251,13 +248,15 @@ vector<vector<int> > Street_Generator(int n_number, int c_number,vector<vector<v
                     }
                 }
             }
-            if(count == 25){
-                cerr << "Error: failed to generate valid input for 25 simultaneous attempts" << endl;
-                exit (EXIT_SUCCESS);
-            }
             if (judgeinside == 0){
                 judgeout = judgeout + 1;
                 tmp_street.push_back(tmp_line_segment[1]);
+            }else{
+                count =  count + 1;
+            }
+            if(count == 25){
+                cerr << "Error: failed to generate valid input for 25 simultaneous attempts" << endl;
+                exit (EXIT_SUCCESS);
             }
         }
     }
@@ -284,9 +283,9 @@ vector<vector<int> > Street_Generator(int n_number, int c_number,vector<vector<v
 
 vector<vector<vector<int> > > Street_List_Generator(int s_number, int n_number, int c_number){
     vector<vector<vector<int> > > tmp_street_list;
-    for(int i =0; i < s_number; i++){
+    for(int m =0; m < s_number; m++){
         vector<vector<int> >  tmp_street;
-        tmp_street = Street_Generator(n_number, c_number, tmp_street_list,i);
+        tmp_street = Street_Generator(n_number, c_number, tmp_street_list,m);
         tmp_street_list.push_back(tmp_street);
     }
     return tmp_street_list;
