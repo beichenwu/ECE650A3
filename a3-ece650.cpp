@@ -158,9 +158,9 @@ int main (int argc, char* argv[]) {
     //waitpid(idRgen,&rgenstatus,WNOHANG);
 
     //if (rgenstatusresult != 0){
-        //for(pid_t p: children){
-        //kill(p,SIGTERM);
-       // }
+    //for(pid_t p: children){
+    //kill(p,SIGTERM);
+    // }
     //}
 
     //return 0;

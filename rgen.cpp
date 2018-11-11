@@ -211,8 +211,8 @@ vector<vector<int> > Street_Generator(int n_number, int c_number,vector<vector<v
     vector<vector<int>> tmp_line_segment;
     vector<int> frist_point = Point_Generator(c_number);
     tmp_street.push_back(frist_point);
-    int count = 0;
     for (int i = 0; i < n_number; i++) {
+        int count = 0;
         last_point = tmp_street[i];
         int judgeout = 0;
         while(count <= 25 && judgeout ==0){
@@ -259,6 +259,7 @@ vector<vector<int> > Street_Generator(int n_number, int c_number,vector<vector<v
                 exit (EXIT_SUCCESS);
             }
         }
+
     }
 
     return tmp_street;
